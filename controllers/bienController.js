@@ -28,11 +28,14 @@ exports.rechercheBiens = async (req, res) => {
   try {
     const { dateDebut, dateFin, commune, prixMax, nbChambresMin, nbCouchagesMin, distanceMax } = req.query;
     
-    // Récupérer les ID des biens loués pendant la période spécifiée
-    const locationsChevauchant = await Location.find({
-      dateDebut: { $lte: parseInt(dateFin) },
-      dateFin: { $gte: parseInt(dateDebut) }
-    }).distinct('idBien');
+    // Récupérer les ID des biens loués pendant la période spécifiée si les dates de début et de fin sont fournies
+    let locationsChevauchant = [];
+    if (dateDebut && dateFin) {
+      locationsChevauchant = await Location.find({
+        dateDebut: { $lte: parseInt(dateFin) },
+        dateFin: { $gte: parseInt(dateDebut) }
+      })
+    }
 
     // Construire le filtre de recherche pour les biens disponibles
     const filter = {
@@ -51,6 +54,7 @@ exports.rechercheBiens = async (req, res) => {
     res.status(400).json({ status: 'error', message: error.message });
   }
 };
+
 
 
 // Obtenir un bien par son ID

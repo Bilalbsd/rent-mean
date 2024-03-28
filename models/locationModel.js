@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const locationSchema = new mongoose.Schema({
-  idLocation: { type: String, required: true },
   idBien: { type: mongoose.Schema.Types.ObjectId, ref: 'Bien', required: true },
   mailLoueur: { type: String, ref: 'Utilisateur.mail', required: true },
   dateDebut: { type: Number, required: true },

@@ -17,7 +17,8 @@ app.use(cors());
 // Connexion à MongoDB
 const connectDB = async () => {
     try {
-        await mongoose.connect('mongodb+srv://' + process.env.USER_PASSWORD_DB + '@cluster0.mojdgsb.mongodb.net/location-logements', {});
+        // await mongoose.connect('mongodb+srv://' + process.env.USER_PASSWORD_DB + '@cluster0.mojdgsb.mongodb.net/location-logements', {});
+        await mongoose.connect('mongodb://127.0.0.1:27017')
         console.log('Connected to MongoDB');
     } catch (err) {
         console.error('Error connecting to MongoDB:', err.message);

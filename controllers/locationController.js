@@ -24,8 +24,9 @@ exports.getLocations = async (req, res) => {
 // Obtenir une location par son ID
 exports.getLocationById = async (req, res) => {
   try {
-    const location = await Location.findById(req.params.id);
-    if (location === null) {
+    const idBien = req.params.idBien;
+    const location = await Location.findOne({ idBien: idBien });
+    if (!location) {
       return res.status(404).json({ message: 'Location non trouvée' });
     }
     res.json(location);
@@ -33,6 +34,7 @@ exports.getLocationById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // Mettre à jour une location
 exports.updateLocation = async (req, res) => {

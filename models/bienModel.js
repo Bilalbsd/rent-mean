@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const bienSchema = new mongoose.Schema({
-  // idBien: { type: mongoose.Schema.Types.ObjectId},
   mailProprio: { type: String, ref: 'Utilisateur.mail', required: true },
   commune: { type: String, required: true },
   rue: { type: String },
@@ -10,6 +9,7 @@ const bienSchema = new mongoose.Schema({
   nbChambres: { type: Number },
   distance: { type: Number },
   prix: { type: Number },
+  image: { type: String },
   latitude: { type: Number },
   longitude: { type: Number }
 });
