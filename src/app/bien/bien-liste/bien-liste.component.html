@@ -1,0 +1,70 @@
+<h1 class="text-xl font-bold text-center">Liste des biens</h1>
+
+<form class="max-w-xl mx-auto mt-6 p-6 bg-white rounded-lg shadow-md" (ngSubmit)="rechercheBiens()">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Date de début</label>
+      <input type="number" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" [(ngModel)]="dateDebut" name="dateDebut">
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Date de fin</label>
+      <input type="number" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" [(ngModel)]="dateFin" name="dateFin">
+    </div>
+  </div>
+  <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Commune</label>
+      <input type="text" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" [(ngModel)]="commune" name="commune">
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Prix maximum</label>
+      <input type="number" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" [(ngModel)]="prixMax" name="prixMax">
+    </div>
+  </div>
+  <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Nombre de chambres minimum</label>
+      <input type="number" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" [(ngModel)]="nbChambresMin" name="nbChambresMin">
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Nombre de couchages minimum</label>
+      <input type="number" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" [(ngModel)]="nbCouchagesMin" name="nbCouchagesMin">
+    </div>
+  </div>
+  <div class="mt-4">
+    <label class="block text-sm font-medium text-gray-700">Distance maximum</label>
+    <input type="number" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" [(ngModel)]="distanceMax" name="distanceMax">
+  </div>
+  <div class="mt-6">
+    <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+      Rechercher
+    </button>
+  </div>
+</form>
+
+<div class="flex gap-10 justify-center mt-10" *ngIf="afficherListeBiens && biens">
+  <div class="w-80 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" *ngFor="let bien of biens">
+    <h5 class="mb-2 text-2xl text-center font-bold tracking-tight text-gray-900 dark:text-white">Logement</h5>
+    <img *ngIf="bien.image" alt="Image Logement" [src]="bien.image" />
+    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Ville : {{ bien.commune }}</p>
+    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Rue : {{ bien.rue }}</p>
+    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Code postal : {{ bien.cp }}</p>
+    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Prix : {{ bien.prix }} €</p>
+
+    <a [routerLink]="['biens/', bien._id]" class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"> <!-- Ajout de la classe justify-center -->
+      Voir
+      <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+      </svg>
+    </a>
+
+    <ng-container *ngIf="dateDebut && dateFin">
+      <button (click)="louerBien(bien)" class="inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> <!-- Ajout de la classe justify-center -->
+          Louer
+          <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+          </svg>
+      </button>
+    </ng-container>
+  </div>
+</div>
