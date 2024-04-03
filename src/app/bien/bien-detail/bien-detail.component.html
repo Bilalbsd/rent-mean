@@ -1,0 +1,35 @@
+<div *ngIf="bien" class="text-center">
+  <h2 class="text-2xl font-bold mb-4">Détails du bien</h2>
+  <ul class="text-center text-left">
+    <li><strong>ID:</strong> {{ bien._id }}</li>
+    <img *ngIf="bien.image" alt="Image Logement" [src]="bien.image" style="max-width: 300px; display: block; margin: 0 auto;" />
+    <li><strong>Mail du propriétaire:</strong> {{ bien.mailProprio }}</li>
+    <li><strong>Commune:</strong> {{ bien.commune }}</li>
+    <li><strong>Rue:</strong> {{ bien.rue }}</li>
+    <li><strong>Code postal:</strong> {{ bien.cp }}</li>
+    <li><strong>Nombre de couchages:</strong> {{ bien.nbCouchages }}</li>
+    <li><strong>Nombre de chambres:</strong> {{ bien.nbChambres }}</li>
+    <li><strong>Distance au centre ville:</strong> {{ bien.distance }} mètres</li>
+    <li><strong>Prix par nuit:</strong> {{ bien.prix }} euros</li>
+    <div class="map-container">
+      <sdk-google-map [latitude]="mapLatitude" [longitude]="mapLongitude" height="500px" width="750px" zoom="12"></sdk-google-map>
+    </div>
+  </ul>
+  <button (click)="deleteBien(bien._id)" class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Supprimer</button>
+
+  <!-- Informations de location -->
+  <div *ngIf="location" class="mt-6">
+    <h2 class="text-2xl font-bold mb-4">Informations de location</h2>
+    <ul class="text-center text-left">
+      <!-- <li><strong>ID de Location:</strong> {{ location._id }}</li> -->
+      <li><strong>Mail du loueur:</strong> {{ location.mailLoueur }}</li>
+      <li><strong>Date de début:</strong> {{ location.dateDebut }}</li>
+      <li><strong>Date de fin:</strong> {{ location.dateFin }}</li>
+      <!-- <li><strong>Avis:</strong> {{ location.avis }}</li> -->
+    </ul>
+  </div>
+</div>
+
+<div *ngIf="!bien" class="text-center">
+  <p class="mt-4">Aucun bien trouvé.</p>
+</div>
