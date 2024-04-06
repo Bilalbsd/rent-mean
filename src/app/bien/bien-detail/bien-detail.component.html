@@ -2,7 +2,7 @@
   <h2 class="text-2xl font-bold mb-4">Détails du bien</h2>
   <ul class="text-center text-left">
     <li><strong>ID:</strong> {{ bien._id }}</li>
-    <img *ngIf="bien.image" alt="Image Logement" [src]="bien.image" style="max-width: 300px; display: block; margin: 0 auto;" />
+    <img *ngIf="bien.image" alt="Image Logement" [src]="bien.image" style="max-width: 300px; display: block; margin: 0 auto;" class="max-w-full mx-auto" />
     <li><strong>Mail du propriétaire:</strong> {{ bien.mailProprio }}</li>
     <li><strong>Commune:</strong> {{ bien.commune }}</li>
     <li><strong>Rue:</strong> {{ bien.rue }}</li>
@@ -26,6 +26,34 @@
       <li><strong>Date de début:</strong> {{ location.dateDebut }}</li>
       <li><strong>Date de fin:</strong> {{ location.dateFin }}</li>
       <!-- <li><strong>Avis:</strong> {{ location.avis }}</li> -->
+    </ul>
+  </div>
+
+  <!-- Formulaire pour ajouter un avis -->
+  <div *ngIf="location && !location.avis" class="mt-6">
+    <h2 class="text-2xl font-bold mb-4">Ajouter un avis</h2>
+    <form (submit)="saveAvis()" class="mx-auto max-w-lg">
+      <div class="mb-4">
+        <label for="newAvisNote" class="block text-sm font-bold mb-2">Note:</label>
+        <input type="number" id="newAvisNote" [(ngModel)]="newAvisNote" name="newAvisNote" min="1" max="5" required
+          class="w-full border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      </div>
+      <div class="mb-6">
+        <label for="newAvisCommentaire" class="block text-sm font-bold mb-2">Commentaire:</label>
+        <textarea id="newAvisCommentaire" [(ngModel)]="newAvisCommentaire" name="newAvisCommentaire" required
+          class="w-full border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+      </div>
+      <button type="submit"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Enregistrer</button>
+    </form>
+  </div>
+
+  <!-- Afficher l'avis existant -->
+  <div *ngIf="location && location.avis" class="mt-6">
+    <h2 class="text-2xl font-bold mb-4">Avis</h2>
+    <ul class="text-center text-left">
+      <li><strong>Note:</strong> {{ location.avis.note }}</li>
+      <li><strong>Commentaire:</strong> {{ location.avis.commentaire }}</li>
     </ul>
   </div>
 </div>
