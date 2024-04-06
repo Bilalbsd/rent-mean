@@ -1,0 +1,51 @@
+<h1 class="text-xl font-bold text-center">Ajouter un logement</h1>
+
+<form [formGroup]="bienForm" (ngSubmit)="onSubmit()" class="max-w-md mx-auto mt-10">
+  <div class="mb-4">
+    <label for="mailProprio" class="block">Adresse e-mail du propriétaire:</label>
+    <input type="email" id="mailProprio" formControlName="mailProprio" required class="w-full px-3 py-2 border rounded-md">
+  </div>
+  <div class="mb-4">
+    <label for="commune" class="block">Commune:</label>
+    <input type="text" id="commune" formControlName="commune" required class="w-full px-3 py-2 border rounded-md">
+  </div>
+  <div class="mb-4">
+    <label for="rue" class="block">Rue:</label>
+    <input type="text" id="rue" formControlName="rue" required class="w-full px-3 py-2 border rounded-md">
+  </div>
+  <div class="mb-4">
+    <label for="cp" class="block">Code postal:</label>
+    <input type="number" id="cp" formControlName="cp" required class="w-full px-3 py-2 border rounded-md">
+  </div>
+  <div class="mb-4">
+    <label for="nbCouchages" class="block">Nombre de couchages:</label>
+    <input type="number" id="nbCouchages" formControlName="nbCouchages" required class="w-full px-3 py-2 border rounded-md">
+  </div>
+  <div class="mb-4">
+    <label for="nbChambres" class="block">Nombre de chambres:</label>
+    <input type="number" id="nbChambres" formControlName="nbChambres" required class="w-full px-3 py-2 border rounded-md">
+  </div>
+  <div class="mb-4">
+    <label for="distance" class="block">Distance au centre ville (en mètres):</label>
+    <input type="number" id="distance" formControlName="distance" required class="w-full px-3 py-2 border rounded-md">
+  </div>
+  <div class="mb-4">
+    <label for="prix" class="block">Prix par nuit:</label>
+    <input type="number" id="prix" formControlName="prix" required class="w-full px-3 py-2 border rounded-md">
+  </div>
+  <div class="mb-4">
+    <label for="image" class="block">Image(*):</label>
+    <input type="text" id="image" formControlName="image" required class="w-full px-3 py-2 border rounded-md">
+  </div>
+  <div class="mb-4">
+    <label for="longitude" class="block">Longitude(*):</label>
+    <input type="number" id="longitude" formControlName="longitude" required class="w-full px-3 py-2 border rounded-md">
+  </div>
+  <div class="mb-4">
+    <label for="latitude" class="block">Latitude(*):</label>
+    <input type="number" id="latitude" formControlName="latitude" required class="w-full px-3 py-2 border rounded-md">
+  </div>
+  <div>
+    <button type="submit" [disabled]="bienForm.invalid" class="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md">Soumettre</button>
+  </div>
+</form>
