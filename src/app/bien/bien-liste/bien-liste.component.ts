@@ -26,6 +26,8 @@ export class BienListeComponent implements OnInit {
   nbCouchagesMin: number = 0;
   distanceMax: number = 0;
 
+  bienRent: boolean = false;
+
   afficherListeBiens: boolean = false;
 
   constructor(private bienService: BienService, private locationService: LocationService, private route: ActivatedRoute, private router: Router) {}
@@ -78,6 +80,7 @@ export class BienListeComponent implements OnInit {
       this.locationService.addLocation({ idBien: bien._id, mailLoueur, dateDebut, dateFin })
         .subscribe((res: any) => {
           console.log('Location ajoutée avec succès :', res);
+          this.bienRent = true;
           // Mettre à jour d'autres états ou actions nécessaires
         }, (error) => {
           console.error('Erreur lors de l\'ajout de la location :', error);
