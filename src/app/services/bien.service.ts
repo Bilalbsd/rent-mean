@@ -1,4 +1,3 @@
-// bien.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -10,7 +9,7 @@ import { Bien } from '../models/bien.model';
 })
 
 export class BienService {
-  private apiUrl = 'http://localhost:3000/api/biens'; // L'URL de votre API pour les biens
+  private apiUrl = 'http://localhost:3000/api/biens';
 
   constructor(private http: HttpClient) {}
 
@@ -40,7 +39,6 @@ export class BienService {
   rechercheBiens(criteria: any): Observable<Bien[]> {
     let params = new HttpParams();
 
-    // Ajoutez chaque critère de recherche comme paramètre si il est fourni
     if (criteria.dateDebut) params = params.set('dateDebut', criteria.dateDebut);
     if (criteria.dateFin) params = params.set('dateFin', criteria.dateFin);
     if (criteria.commune) params = params.set('commune', criteria.commune);
@@ -49,8 +47,9 @@ export class BienService {
     if (criteria.nbCouchagesMin) params = params.set('nbCouchagesMin', criteria.nbCouchagesMin);
     if (criteria.distanceMax) params = params.set('distanceMax', criteria.distanceMax);
 
-    // Envoyer une requête GET avec les paramètres construits
     return this.http.get<Bien[]>(`${this.apiUrl}/recherche`, { params: params });
   }
   
 }
+
+

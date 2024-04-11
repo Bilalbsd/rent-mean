@@ -30,7 +30,7 @@ export class LocationService {
     return this.http.post<Location>(this.apiUrl, location);
   }
 
-  updateLocation(id: string): Observable<Location> {
+  updateLocation(id: string, location: Location): Observable<Location> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.put<Location>(url, location);
   }
