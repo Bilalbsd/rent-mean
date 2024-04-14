@@ -73,11 +73,11 @@ export class BienDetailComponent implements OnInit {
       };
     }
     if (this.location !== undefined && this.location._id !== undefined) {
-      this.locationService.updateLocation(this.location._id)
-        .subscribe(() => {
+      this.locationService.updateLocation(this.location._id, this.location)
+        .subscribe((location) => {
           // Succès de la mise à jour
-          console.log("location pour avis", this.location);
-          // Vous pouvez ajouter une logique supplémentaire ici, comme rediriger l'utilisateur
+          console.log("location pour avis", location);
+          this.location = {...location, avis: location.avis};
           console.log('Avis enregistré avec succès');
         });
     }
