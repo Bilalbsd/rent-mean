@@ -5,8 +5,9 @@ import { BienService } from '../../services/bien.service';
 import { LocationService } from '../../services/location.service';
 import { Location } from '../../models/location.model';
 import { SDKGoogleMapModule } from 'sdk-google-map';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe, formatDate } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-bien-detail',
@@ -17,12 +18,19 @@ import { FormsModule } from '@angular/forms';
 })
 export class BienDetailComponent implements OnInit {
   bien: Bien | undefined;
+
   location: Location | undefined;
+  locataires: Location[] = [];
+
   newAvisNote: number | undefined;
   newAvisCommentaire: string | undefined;
 
   public mapLatitude: string = '';
   public mapLongitude: string = '';
+
+  nom: string = '';
+  prenom: string = '';
+  mail: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +41,14 @@ export class BienDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBien();
+    this.getLocatairesByBienId();
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken: any = jwtDecode(token);
+      this.nom = decodedToken.nom;
+      this.prenom = decodedToken.prenom;
+      this.mail = decodedToken.mail;
+    }
   }
 
   getBien(): void {
@@ -55,6 +71,14 @@ export class BienDetailComponent implements OnInit {
       });
     }
 
+  getLocatairesByBienId(): void {
+    this.locationService.getLocations()
+      .subscribe(locations => {
+        // Filtrer les locations pour récupérer uniquement celles liées au bien actuel
+        this.locataires = locations.filter(location => location.idBien === this.bien?._id);
+      });
+  }
+
   getLocation(): void {
     const bienId = this.route.snapshot.paramMap.get('id');
     if (bienId !== null) {
@@ -67,19 +91,23 @@ export class BienDetailComponent implements OnInit {
 
   saveAvis(): void {
     if (this.newAvisNote !== undefined && this.newAvisCommentaire !== undefined && this.location !== undefined) {
-      this.location.avis = {
-        note: this.newAvisNote,
-        commentaire: this.newAvisCommentaire
-      };
+        const newAvis = {
+            note: this.newAvisNote,
+            commentaire: this.newAvisCommentaire
+        };
+        if (!this.location.avis) {
+            this.location.avis = []; // Initialisation du tableau d'avis s'il est vide
+        }
+        this.location.avis.push(newAvis); // Ajout du nouvel avis au tableau
+
+        if (this.location._id) {
+            this.locationService.updateLocation(this.location._id, this.location)
+                .subscribe((location) => {
+                    this.location = location; // Mettre à jour la location avec les avis mis à jour
+                    console.log('Avis enregistré avec succès');
+                });
+        }
     }
-    if (this.location !== undefined && this.location._id !== undefined) {
-      this.locationService.updateLocation(this.location._id, this.location)
-        .subscribe((location) => {
-          // Succès de la mise à jour
-          console.log("location pour avis", location);
-          this.location = {...location, avis: location.avis};
-          console.log('Avis enregistré avec succès');
-        });
-    }
-  }
+}
+
 }

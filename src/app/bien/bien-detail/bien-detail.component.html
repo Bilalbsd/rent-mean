@@ -1,8 +1,11 @@
 <div *ngIf="bien" class="text-center">
+  <!-- Détails du bien -->
   <h2 class="text-2xl font-bold mb-4">Détails du bien</h2>
-  <ul class="text-center text-left">
+  <ul class="text-center">
     <li><strong>ID:</strong> {{ bien._id }}</li>
-    <img *ngIf="bien.image" alt="Image Logement" [src]="bien.image" style="max-width: 300px; display: block; margin: 0 auto;" class="max-w-full mx-auto" />
+    <li *ngIf="bien.image">
+      <img alt="Image Logement" [src]="bien.image" style="max-width: 300px; display: block; margin: 0 auto;" class="max-w-full mx-auto" />
+    </li>
     <li><strong>Mail du propriétaire:</strong> {{ bien.mailProprio }}</li>
     <li><strong>Commune:</strong> {{ bien.commune }}</li>
     <li><strong>Rue:</strong> {{ bien.rue }}</li>
@@ -11,26 +14,32 @@
     <li><strong>Nombre de chambres:</strong> {{ bien.nbChambres }}</li>
     <li><strong>Distance au centre ville:</strong> {{ bien.distance }} mètres</li>
     <li><strong>Prix par nuit:</strong> {{ bien.prix }} euros</li>
-    <div class="map-container">
-      <sdk-google-map [latitude]="mapLatitude" [longitude]="mapLongitude" height="500px" width="750px" zoom="12"></sdk-google-map>
-    </div>
+    <li>
+      <div class="map-container">
+        <sdk-google-map [latitude]="mapLatitude" [longitude]="mapLongitude" height="500px" width="750px" zoom="12"></sdk-google-map>
+      </div>
+    </li>
   </ul>
-  <button (click)="deleteBien(bien._id)" class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Supprimer</button>
 
-  <!-- Informations de location -->
-  <div *ngIf="location" class="mt-6">
-    <h2 class="text-2xl font-bold mb-4">Informations de location</h2>
-    <ul class="text-center text-left">
-      <!-- <li><strong>ID de Location:</strong> {{ location._id }}</li> -->
-      <li><strong>Mail du loueur:</strong> {{ location.mailLoueur }}</li>
-      <li><strong>Date de début:</strong> {{ location.dateDebut }}</li>
-      <li><strong>Date de fin:</strong> {{ location.dateFin }}</li>
-      <!-- <li><strong>Avis:</strong> {{ location.avis }}</li> -->
+  <!-- Bouton Supprimer (visible pour le propriétaire) -->
+  <button (click)="deleteBien(bien._id)" *ngIf="bien.mailProprio === mail" class="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Supprimer</button>
+
+  <!-- Liste des locataires liés au bien -->
+  <div *ngIf="locataires && locataires.length > 0" class="mt-6">
+    <h2 class="text-2xl font-bold mb-4">Locataires liés à ce bien</h2>
+    <ul class="text-left">
+      <li *ngFor="let locataire of locataires" class="text-center">
+        <strong>Mail du loueur :</strong> {{ locataire.mailLoueur }} |
+        <strong>Date de début :</strong> {{ locataire.dateDebut }} |
+        <strong>Date de fin :</strong> {{ locataire.dateFin }}
+      </li>
     </ul>
   </div>
 
+
+
   <!-- Formulaire pour ajouter un avis -->
-  <div *ngIf="location && !location.avis" class="mt-6">
+  <div class="mt-6" *ngIf="nom">
     <h2 class="text-2xl font-bold mb-4">Ajouter un avis</h2>
     <form (submit)="saveAvis()" class="mx-auto max-w-lg">
       <div class="mb-4">
@@ -43,21 +52,26 @@
         <textarea id="newAvisCommentaire" [(ngModel)]="newAvisCommentaire" name="newAvisCommentaire" required
           class="w-full border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
       </div>
-      <button type="submit"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Enregistrer</button>
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Enregistrer</button>
     </form>
   </div>
 
-  <!-- Afficher l'avis existant -->
-  <div *ngIf="location && location.avis" class="mt-6">
+  <!-- Avis -->
+  <div *ngIf="location?.avis && location?.avis" class="mt-6">
     <h2 class="text-2xl font-bold mb-4">Avis</h2>
-    <ul class="text-center text-left">
-      <li><strong>Note:</strong> {{ location.avis.note }}</li>
-      <li><strong>Commentaire:</strong> {{ location.avis.commentaire }}</li>
-    </ul>
+    <div class="flex flex-col items-center">
+      <div *ngFor="let avis of location?.avis" class="w-full max-w-xl bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mb-4">
+        <div class="block p-6">
+          <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">Commentaire</h5>
+          <p class="font-normal text-gray-700 dark:text-gray-400">Note: {{ avis.note }}</p>
+          <p class="font-normal text-gray-700 dark:text-gray-400">Commentaire: {{ avis.commentaire }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
+<!-- Aucun bien trouvé -->
 <div *ngIf="!bien" class="text-center">
   <p class="mt-4">Aucun bien trouvé.</p>
 </div>
