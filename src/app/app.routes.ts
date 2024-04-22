@@ -5,7 +5,6 @@ import { BienDetailComponent } from './bien/bien-detail/bien-detail.component';
 import { RegisterComponent } from './utilisateur/register/register.component';
 import { LoginComponent } from './utilisateur/login/login.component';
 import { ProfilComponent } from './utilisateur/profil/profil.component';
-import { MapComponent } from './map/map.component';
 
 export const routes: Routes = [
     { path: '', title: 'BienList', component: BienListeComponent },
@@ -14,11 +13,8 @@ export const routes: Routes = [
     { path: 'register', title: 'Register', component: RegisterComponent },
     { path: 'login', title: 'Login', component: LoginComponent },
     { path: 'profil', title: 'Profil', component: ProfilComponent },
-
-    { path: 'map', title: 'Map', component: MapComponent },
     { path: '**', redirectTo: '/', pathMatch: 'full' },
     //   { path: 'biens/:id', component: DetailsBienComponent },
     //   { path: 'biens/:id/modification', component: ModificationBienComponent },
     //   { path: 'biens/:id/suppression', component: SuppressionBienComponent },
-
 ];
